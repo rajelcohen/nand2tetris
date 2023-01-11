@@ -1,0 +1,58 @@
+class MazeDrawer {
+//function that draws the maze into screen
+	function void drawMaze(Array maze, int originX, int originY, int blockWidth, int blockHeight, int xCount, int yCount) {
+		//maze is the maze a matrix, meaning array inside an array
+		var int y, x, val;
+		var Array tempArr;
+		let x = 0;
+		let y = 0;
+		let val = 0;
+		do Screen.setColor(true); 
+		do Screen.drawRectangle(originX, originY, originX + (xCount * blockWidth), originY + (yCount * blockHeight)); // creates rectangle with given hights and width
+		do Screen.setColor(false); 
+		do Screen.drawRectangle(originX + 1, originY + 1, originX + (xCount * blockWidth) - 1, originY + (yCount * blockHeight) - 1); //creates a bigger rectangle over last one
+
+		//goes oveer all of matrix, if num % 4 -> east wall, if num % 2 -> south wall
+		
+		while(y < yCount) { //if y hasnt gotten to the end of y matrix
+			let tempArr = maze[y]; //tempArr = maze[y]
+			let x = 0;
+			while(x < xCount) { //if x hasnt gotten to the end of x matrix
+				let val = tempArr[x]; //val = maze[x][y] (at first y,x are 0)
+				if((val & 4) = 0) { //if val%4 == 0
+					do MazeDrawer.drawEastWall(x, y, originX, originY, blockWidth, blockHeight);
+				}
+
+				if((val & 2) = 0) { //if val%2 == 0
+					do MazeDrawer.drawSouthWall(x, y, originX, originY, blockWidth, blockHeight);
+				}
+				
+				let x = x + 1; // x++
+			}
+			let y = y + 1; // y++
+		}
+
+		return;
+	}
+
+
+	//gets place to draw (insert) wall into screen with x, y places
+	function void drawEastWall(int x, int y, int originX, int originY, int bw, int bh) {
+		do Screen.setColor(true);
+		//calculates where to draw the line
+		do Screen.drawLine(originX + bw + (bw * x), originY + (y * bh), originX + bw + (bw * x), originY + bh + (y * bh));
+		return;
+	}
+
+
+	//same as drawEastWall
+	function void drawSouthWall(int x, int y, int originX, int originY, int bw, int bh) {
+		do Screen.setColor(true);
+		do Screen.drawLine(originX + (bw * x), originY + bh + (y * bh), originX + (bw * x) + bw,  originY + bh + (y * bh));
+		return;
+	}
+
+
+
+
+}

@@ -1,0 +1,45 @@
+class PseudoRand {
+	/*
+	This is a Linear congruential generator, this is the function we use to make random nums
+	Xn+1 = 17Xn + 5  mod 31
+	*/
+
+	field int cur; // current
+
+	constructor PseudoRand def(int x){ // construcrtor for pseudoRand
+		let cur = x; 
+		return this;
+	} 
+
+	//gets maximum for the next random, receivs rand num less than mod -> rand.next(int max)
+	method int next(int mod){
+		var int term;
+
+		let term = cur;
+		let term = (term * 17) + 5;
+		let term = modula(term, 31); // term = term%31
+		let cur = term;
+
+		//if we got a num that is too big, we delete the mod received untill we recieve a num less than mod
+		while(term > mod) {
+			let term = term - mod;
+		}
+		return term;
+	}
+
+	// calculates "%"
+	method int modula(int number, int mod){
+		//if we got a num that is too big, we delete the mod received untill we recieve a num less than mod
+		while(number > mod) {
+			let number = number - mod;
+		}
+		if(number = mod){
+			let number = 0;
+		}
+		while(number < 0){
+			let number = number + mod;
+		}
+		return number;
+	}
+
+}

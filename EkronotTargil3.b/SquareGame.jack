@@ -1,0 +1,200 @@
+
+ //class that has functions to do the quare game, where square can go up, down, left and right, become bigger or smaller, and quit game.
+ class SquareGame {
+
+    // square
+    field Square square;
+
+    // The square's movement direction
+    //at the beggining starts with 0
+    // 0=none,1=up,2=down,3=left,4=right
+
+    field int direction; 
+    field Square trapSquare;
+
+    //constructor of game, builds the square and no direction = 0
+    constructor SquareGame new() {
+        let square = Square.new(0, 0, 40);
+        let direction = 0;
+        return this;
+    }
+
+    /** Deallocates the object's memory. */
+    method void dispose() {
+        do square.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+
+
+
+    // Starts the game, with the trapsquare
+    method void run(PseudoRand rng) {
+        var int x, y, s, i, j, mod, k;
+        var int a, b;
+        var char key; // direction | grow?
+        var boolean exit; //finished?
+        let exit = false;
+        let s = square.getSize();
+
+        let a = rng.next(254 - 41);
+        let b = rng.next(510 - 41);
+        let i = 0;
+        let j = 4;
+        
+
+        while(a < (s + 1) & b < (s + 1))
+        {
+            //do rng.setCur(100);
+            let a = rng.next(254 - 41);
+            let b = rng.next(510 - 41);
+        }
+      
+        let trapSquare = Square.new(a,b, 40);
+
+        while (~exit) { //while the user hsnt pressed q, the game runs
+            // waits for a key to be pressed.
+           
+
+            
+            let x = square.getX();
+            let y = square.getY();
+            let s = square.getSize();
+            
+            while (key = 0) {
+                let key = Keyboard.keyPressed(); // give user keyboard control
+                do moveSquare(); //depending on the keyboard pressed, movesquare will change direction of square and draw it into screen
+            }
+
+            if (key = 81) { // key = q
+                let exit = true;
+            }
+            if (key = 90) { // key = z
+                do square.Smaller();
+            }
+            if (key = 88) { // key = x
+                do square.Bigger();
+            }
+
+            // 0=none,1=up,2=down,3=left,4=right
+            if (key = 131) { // key = up
+                let direction = 1;
+            }
+            if (key = 133) { // key = down
+                let direction = 2;
+            }
+            if (key = 130) { // key = left
+                let direction = 3;
+            }
+            if (key = 132) { // key = right
+                let direction = 4;
+            }
+
+            // waits for the key to be released.
+            while (~(key = 0)) { // gives user chance to press key
+                let key = Keyboard.keyPressed();
+                do moveSquare(); //depending on the keyboard pressed, movesquare will change direction of square and draw it into screen                
+            }
+
+            let mod = PseudoRand.modulafunc(i,j);
+            if(mod = 3) {
+                do randomSquare(i);
+            }
+            
+
+            let i = i + 1;
+
+
+        }
+        do square.erase();    
+        return;
+	}
+
+    //starts the game without the trapsquare
+    /**method void run(PseudoRand rng) {
+        var char key;
+        var boolean exit;
+
+        let exit = false;
+
+        while (~exit) {
+            // waits for a key to be pressed.
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
+                do moveSquare();
+            }
+
+            if (key = 81) {
+                let exit = true;
+            }
+            if (key = 90) {
+                do square.Smaller();
+            }
+            if (key = 88) {
+                do square.Bigger();
+            }
+            if (key = 131) {
+                let direction = 1;
+            }
+            if (key = 133) {
+                let direction = 2;
+            }
+            if (key = 130) {
+                let direction = 3;
+            }
+            if (key = 132) {
+                let direction = 4;
+            }
+
+            // waits for the key to be released.
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+                do moveSquare();
+            }
+        }
+            
+        return;
+	}**/
+
+
+    //with key recieved, moves square in screen
+    method void moveSquare() {
+        if (direction = 1) { // key = 1, up
+
+            do square.moveUp();
+        }
+        if (direction = 2) { // key = 2, down
+            do square.moveDown();
+        }
+        if (direction = 3) { // key = 3, left
+            do square.moveLeft();
+        }
+        if (direction = 4) { //key = 4, right
+            do square.moveRight();
+        }
+
+        do Sys.wait(2); // Delays the next movement, obligates time between keys pressed
+        return;
+    }
+
+    method void randomSquare(int rand)
+    {
+        var int a, b, s;
+        var PseudoRand rng;
+        let s = square.getSize();
+        let rng = PseudoRand.def(rand);
+        let a = rng.next(200);
+        let b = rng.next(450);
+        if(a + s > 510 | b + s > 254)
+        {
+            let trapSquare = Square.new(a-100,b-100, 40);
+        }
+        let trapSquare = Square.new(a,b, 40);
+
+        do Sys.wait(50);
+        return;
+        
+
+    }
+}

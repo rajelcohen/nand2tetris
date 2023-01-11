@@ -1,0 +1,129 @@
+
+
+ //Implements a square: location, size, drawing, erasing, moving on the screen, and changing its size.
+ class Square {
+    //location
+    field int x, y;
+
+    // size 
+    field int size;
+
+    //constructor for square
+    constructor Square new(int X, int Y, int Size) {
+        let x = X;
+        let y = Y;
+        let size = Size;
+        do draw(); //draw square into screen
+        return this;
+    }
+
+    method int getX(){
+		return x;
+	}
+
+	method int getY(){
+		return y;
+	}
+
+    method int getSize(){
+        return size;
+    }
+
+    /** Deallocates the object's memory. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    //draw's the square into screen
+    method void draw() {
+        do Screen.setColor(true); //gives color to shape
+        if (x+size < 510 & y+size < 254){
+            do Screen.drawRectangle(x, y, x + size, y + size);
+        }
+        //do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+
+    //earses square from screen
+    method void erase() {
+        do Screen.setColor(false); //gives no color to shape, making the square dissapear
+        do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+
+    //makes the square bigger by 2
+    method void Bigger() {
+        if (((y + size) < 254) & ((x + size) < 510)) //size of the screen - limit
+        {
+            do erase();
+            let size = size + 2;
+            do draw();
+        }
+        return;
+    }
+
+    //makes square smaller by 2
+    method void Smaller() {
+        if (size > 2) { //cant be smaller than 2
+            do erase();
+            let size = size - 2;
+            do draw();
+        }
+        return;
+	}
+
+    //screan works in a way that the point in the top left side if the screen is [0,0]
+
+    // Square goes up by 2
+    method void moveUp() {
+        //example: [0,0] -> [0,-1] -> y--
+        if (y > 1) { //if we got to the top - limit
+            do Screen.setColor(false); // take down old square
+            do Screen.drawRectangle(x, (y + size) - 1, x + size, y + size); //takes one from old square 
+            let y = y - 2;
+            do Screen.setColor(true); //draw new square
+            do Screen.drawRectangle(x, y, x + size, y + 1);
+        }
+        return;
+    }
+
+    //square goes gown
+    method void moveDown() { 
+        //example: [0,0] -> [0,1] -> y++
+        if ((y + size) < 254) { //if we got to bottom of screen - limit
+            do Screen.setColor(false); // take down old square
+            do Screen.drawRectangle(x, y, x + size, y + 1);
+            let y = y + 2;
+            do Screen.setColor(true);//draw new square
+            do Screen.drawRectangle(x, (y + size) - 1, x + size, y + size);
+        }
+        return;
+    }
+
+    //square goes left
+    method void moveLeft() {
+        //example: [0,0] -> [-1,0] -> x--
+        if (x > 1) { //if we got to left side limit
+            do Screen.setColor(false); // take down old square
+            do Screen.drawRectangle((x + size) - 1, y, x + size, y + size);
+            let x = x - 2;
+            do Screen.setColor(true);//draw new square
+            do Screen.drawRectangle(x, y, x + 1, y + size);
+        }
+        return;
+    }
+
+    //square goes right
+    method void moveRight() {
+        //example: [0,0] -> [1,0] -> x++
+        if ((x + size) < 510) { // if we gor to right side limit
+            do Screen.setColor(false); // take down old square
+            do Screen.drawRectangle(x, y, x + 1, y + size);
+            let x = x + 2;
+            do Screen.setColor(true);//draw new square
+            do Screen.drawRectangle((x + size) - 1, y, x + size, y + size);
+        }
+        return;
+    }
+}

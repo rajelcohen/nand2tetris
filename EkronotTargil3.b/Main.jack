@@ -1,0 +1,46 @@
+
+//Main that uses the sqaureGame
+ class Main {
+
+    //Start Game with run 
+    function void main() {
+        var int startRand;
+        var PseudoRand rng;
+        var SquareGame game;
+
+        //print random key
+        do Output.moveCursor(20, 25);
+		do Output.printString("Press a random key to start");
+
+        //recieve random key
+        let startRand = Main.getFirstKeyPressed();
+		//we decide the maze in relation to a random number given with the key
+		let rng = PseudoRand.def(startRand); //user input is the seed
+
+        //delete message
+        do Screen.setColor(false);
+		do Screen.drawRectangle(96, 0, 511, 255);
+
+        //start game
+        let game = SquareGame.new();
+        do game.run(rng);
+
+
+
+        do Screen.setColor(true);
+		do Output.moveCursor(11, 28);
+		do Output.printString("END OF GAME!");
+
+	do game.dispose();
+        return;
+    }
+
+    function int getFirstKeyPressed(){
+		var char key;
+		let key = 0;
+		while(key = 0){
+			let key = Keyboard.keyPressed();
+		}
+		return key;
+	}
+}

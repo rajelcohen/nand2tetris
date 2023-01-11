@@ -1,0 +1,105 @@
+/* Simple guess my number game */
+class Main {
+	function void main() {
+        var Random random;
+        var char firstKey;
+		var int myNum, guess, maxGuesses, guessCount, num;
+        var int line;
+        let line = 0;
+
+        let firstKey = Keyboard.readInt("Enter a key to start: ");
+        do Output.printString("Guessing Game Starting! to exit the game at any moment, enter a letter.");
+        do Output.println();
+        let random = Random.new(firstKey);
+        let myNum = random.randRange(10);
+
+        //let rng = Random.randRange(10); //user input is the seed
+		//let myNum = 5;
+
+		let maxGuesses = 3;
+		let guessCount = 0;
+		let guess = Keyboard.readInt("Guess a number between 1 and 10: ");
+		let guessCount = guessCount + 1;
+        let line = 4;
+
+        while(~(guess = 0))
+        {
+            while(~(guess = myNum) & ~(guess = 0) & (guessCount < maxGuesses) )
+            {
+                if(guessCount = 0)
+                {
+                    if(line > 20)
+                    {
+                        do Screen.clearScreen();
+                        let line = 0;
+                    }
+                    let guess = Keyboard.readInt("Guess number between 1 and 10: ");
+                }
+                else
+                {
+                    let guess = Keyboard.readInt("Wrong, guess another number between 1 and 10: ");
+                }
+                let guessCount = guessCount + 1;
+                let line = line + 1;
+		    }
+		    if(~(guess = myNum) & ~(guess = 0))
+		    {
+                if(line > 20)
+                {
+                    do Screen.clearScreen();
+                    let line = 0;
+                }
+			    do Output.printString("You failed to guess my number within ");
+			    do Output.printInt(maxGuesses);
+			    do Output.printString(" tries. Number was: ");
+                do Output.printInt(myNum);
+			    do Output.println();
+                do Output.printString("Try again: ");
+                do Output.println();
+                let firstKey = firstKey * 123;
+                let random = Random.new(firstKey + 1);
+                let myNum = random.randRange(10);
+                let guessCount = 0;
+                let line = line + 3;
+		    }
+		    else
+		    {
+                if(~(guess = 0))
+                {
+                    if(line > 20)
+                    {
+                        do Screen.clearScreen();
+                        let line = 0;
+                    }
+                    do Output.printString("Congratulations, you correctly guessed my number.");
+                    do Output.println();
+                    let guessCount = 1;
+                    let firstKey = firstKey * 123;
+                    let random = Random.new(firstKey);
+                    let myNum = random.randRange(10);
+                    let guess = Keyboard.readInt("To continue the game guess number between 1 and 10: ");
+                    let line = line + 2;
+
+                }
+             
+
+		    }
+        }
+        do Screen.clearScreen();
+        do Output.printString("Guessing Game Ended!");
+        do Output.println();
+        do Output.printString("By Rachel Cohen & Ruty Rosenberg");
+
+		return;
+
+	}
+
+    function int getFirstKeyPressed(){
+		var char key;
+		let key = 0;
+		while(key = 0){
+			let key = Keyboard.keyPressed();
+		}
+		return key;
+	}
+}
